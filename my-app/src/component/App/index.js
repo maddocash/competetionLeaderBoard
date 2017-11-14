@@ -13,7 +13,7 @@ class App extends Component {
     this.setState(prevState => ({tournament: data}))
   }
   render() {
-    return (
+    return ( 
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">Welcome to React</h1>
