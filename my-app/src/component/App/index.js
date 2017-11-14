@@ -3,6 +3,8 @@ import './App.css';
 import Form from '../Form';
 import Match from '../Match';
 
+import TournamentRow from '../TournamentRow';
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -17,6 +19,7 @@ class App extends Component {
     return (
       <div>
         <Form onSubmit={this._onSubmit} />
+        <TournamentRow row={[1,2,3,4,5]} />
       </div>
     );
   }
