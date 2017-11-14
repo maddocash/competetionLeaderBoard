@@ -3,6 +3,8 @@ import './App.css';
 import Form from '../Form';
 import Tournament from '../Tournament';
 
+
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -15,6 +17,7 @@ class App extends Component {
   }
   render() {
     return (
+
       <div>
         <Form onSubmit={this._onSubmit} />
         <Tournament players={this.state} numRow={this.state.tournament.numRow}/>
