@@ -25,7 +25,7 @@ const Player = (props) => {
   }
   return (
 
-    <div onClick={props.onWin}>
+    <div onClick={() => props.onWin(props.player,props.roundNumber)}>
 
     <Card style={{...cardStyle,...backgroundStyle}}>
     <Avatar
@@ -33,7 +33,7 @@ const Player = (props) => {
       style={avStyle}
     />
 
-    <CardTitle title={props.name||"Player Name"} titleStyle={{fontSize: '13px',color: "white", fontWeight: "bold"}} />
+    <CardTitle title={props.player} titleStyle={{fontSize: '13px',color: "white", fontWeight: "bold"}} />
 
     <CardActions>
 

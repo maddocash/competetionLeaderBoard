@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
-import Player from 'Player';
-import Branch from 'Branch';
+import Player from '../Player';
+import Branch from '../Branch';
 
 class Match extends Component {
   render () {
       return(
-        <div>
+        <div style={{display:'inherit',justifyContent:'space-around'}}>
           <Branch />
-          <Player />
-          <Player />
+          {this.props.players.filter(a => a != null ).map(a => <Player roundNumber={this.props.roundNumber} onWin={this.props.onWin} player={a} />)}
         </div>
       )
   }

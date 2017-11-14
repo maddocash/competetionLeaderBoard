@@ -18,7 +18,8 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   Player.find({name: {$in: req.body.players}}, (err, players) => {
     const playerIds = players.map(p => p._id);
-    const rounds = Array.from(Array(req.body.numRows).keys()).map(a => Array(2**a).fill(0))
+    let rounds = Array.from(Array(req.body.numRows).keys()).map(a => Array(2**a).fill(0)).reverse();
+    rounds[0] = playerIds;
     const tournament = new Tournament({
       ...req.body,
       players: playerIds,
