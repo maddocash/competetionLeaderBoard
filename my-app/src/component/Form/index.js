@@ -39,10 +39,10 @@ class Form extends Component{
     } = this.state
     return (
       <form onSubmit={this._onSubmit}>
-        <input name="tournamentName" onChange={this._onChange} value={tournamentName} type="text"></input>
-        <input name="numRows" onChange={this._onChange} value={numRows} type="number"></input>
-        <input name="playerNames" onChange={this._onChange} value={playerNames} type="text"></input>
-        <input type="submit"></input>
+        <label for="tournamentName"></label><input name="tournamentName" onChange={this._onChange} value={tournamentName} type="text"></input>
+        <label for="numRows"></label><input name="numRows" onChange={this._onChange} value={numRows} type="number"></input>
+        <label for="playerNames"></label><input name="playerNames" onChange={this._onChange} value={playerNames} type="text"></input>
+          <input type="submit"></input>
       </form>
     )
   };

@@ -18,13 +18,13 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   Player.find({name: {$in: req.body.players}}, (err, players) => {
     const playerIds = players.map(p => p._id);
-    const state = Array(req.body.numRows).fill(Array(playerIds.length).fill(0))
+    const rounds = Array.from(Array(req.body.numRows).keys()).map(a => Array(2**a).fill(0))
     const tournament = new Tournament({
       ...req.body,
       players: playerIds,
-      state
+      rounds
     });
-    console.log(state)
+    console.log(rounds)
     console.log(tournament)
     console.log(req.body)
     tournament.save((err,tournament) => {
@@ -38,13 +38,13 @@ router.post('/', function(req, res, next) {
 });
 
 router.patch('/:id', function(req, res, next) {
-  const { state } = req.query;
+  const { rounds } = req.query;
 
   Tournament.findById(req.params.id, (err,tournament) => {
     if(err){
       return res.json({error: err})
     }
-    tournament.state = state || tournament.state;
+    tournament.rounds = rounds || tournament.rounds;
 
     tournament.save((err,tournament) => {
       if(err){
