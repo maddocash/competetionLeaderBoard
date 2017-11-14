@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Form from '../Form';
+import Tournament from '../Tournament';
 
-import Player from '../Player'
-
-import Match from '../Match';
-
-import TournamentRow from '../TournamentRow';
 
 
 class App extends Component {
@@ -24,8 +20,7 @@ class App extends Component {
 
       <div>
         <Form onSubmit={this._onSubmit} />
-        <TournamentRow row={[1,2,3,4,5]} />
-
+        <Tournament players={this.state} numRow={this.state.tournament.numRow}/>
       </div>
     );
   }
