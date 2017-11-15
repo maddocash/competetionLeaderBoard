@@ -1,15 +1,46 @@
 import React, {Component} from 'react';
 import Player from '../Player';
-import Branch from '../Branch';
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    justifyContent: 'space-around',
+    alignContent: 'center',
+    alignItems: 'flex-start'
+  },
+  player: {
+    flex: '0 1 auto'
+  }
+}
 
 class Match extends Component {
   render () {
-      return(
-        <div style={{display:'inherit',justifyContent:'space-around'}}>
-          <Branch />
-          {this.props.players.filter(a => a != null ).map(a => <Player roundNumber={this.props.roundNumber} onWin={this.props.onWin} player={a} />)}
-        </div>
-      )
+    const {
+      players,
+      roundNumber,
+      onWin,
+      data,
+      winners
+    } = this.props;
+    return(
+      <div style={styles.container}>
+        {players
+          .filter(a => a != null )
+          .map((player, index) => {
+            const playerData = data.byId[player];
+            return (<Player
+              key={index}
+              style={styles.player}
+              roundNumber={roundNumber}
+              onWin={onWin}
+              player={playerData}
+              winner={winners.includes(player)}
+            />)
+          })}
+      </div>
+    )
   }
 }
 

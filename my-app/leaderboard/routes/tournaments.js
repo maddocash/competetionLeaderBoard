@@ -1,13 +1,22 @@
 var express = require('express');
 var router = express.Router();
 
-
 const Tournament = require('../models/tournaments');
 const Player = require('../models/players');
 
+const calculateNumRounds = (length, capacity) => Math.ceil(Math.log(length)/Math.log(capacity)) + 1;
+const generateRounds = (numPlayers, capacity, fillWith = 0) => (
+  Array.from(
+    Array(
+      calculateNumRounds(numPlayers, capacity)
+    ).keys())
+    .map(a => Array(capacity**a)
+      .fill(fillWith)
+    )
+  )
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  Tournament.find({},(err,tournaments) => {
+  Tournament.find(req.query,(err,tournaments) => {
     if(err){
       return res.json({error: err})
     }
@@ -17,17 +26,16 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   Player.find({name: {$in: req.body.players}}, (err, players) => {
+    const matchCapacity = 2;
     const playerIds = players.map(p => p._id);
-    let rounds = Array.from(Array(req.body.numRows).keys()).map(a => Array(2**a).fill(0)).reverse();
+    let rounds = generateRounds(players.length, matchCapacity).reverse();
     rounds[0] = playerIds;
     const tournament = new Tournament({
-      ...req.body,
-      players: playerIds,
-      rounds
+      name: req.body.name || 'Tournament',
+      players,
+      rounds,
+      matchCapacity
     });
-    console.log(rounds)
-    console.log(tournament)
-    console.log(req.body)
     tournament.save((err,tournament) => {
       if(err){
         return res.json({error: err})
