@@ -17,7 +17,19 @@ const styles = {
   }
 }
 
+/*
+ * [calculate the new index of the winner]
+ * @param  {number} index [current Id]
+ * @return {[type]}       [description]
+ */
 const indexMapper = (index) => Math.floor(index/2);
+
+/*
+ * [splits players into an array of their ids.
+ * And an object containing their attributes i.e. name, avatar]
+ * @param  {[type]} players [description]
+ * @return {[type]}         [description]
+ */
 const playersArrayToState = (players) => (
   {
     byId: players.reduce((acc, cur) => {
@@ -57,15 +69,62 @@ class App extends Component {
     const {rounds} = this.state.tournament;
     return rounds[number];
   }
+  //need to find the first array an ID is in (reversed)
+  //rounds is an array of arrays. we need to find the first instance
+  //of an id and then set there score equal to the index of the
+  //array in rounds.
+  //
+  // _getScore = (arr,id) => {
+  //   arr.reverse().map((round,idx) => {
+  //     let score;
+  //     let alreadyGotAScore = [];
+  //     if(round.includes(id)&& !alreadyGotAScore.includes(id)) {
+  //       score = arr[arr.length - idx];
+  //       alreadyGotAScore.push(id)
+  //       return score;
+  //     }
+  //
+  //   })
+  //   return score
+  // }
+
+  _getScore = (arr) => {
+    var counts = {};
+    var x = [].concat(...arr)
+    x.forEach(y => counts[y] = (counts[y] || 0)+1);
+    return counts;
+  }
+
 
   _onWin = (id, rnd) =>{
     if(this.state.done){
       return;
     }
     if(rnd >= (this.state.tournament.rounds.length - 1)) {
+      console.log('ooooo, about to do fetch'); // here to keep Leigh happy :)
+      // fetch(`/players`,{
+      //   headers:{
+      //     'Content-Type':'application/json'
+      //   },
+      //   method:'PATCH',
+      //   body:JSON.stringify(this._getScore(this.state.tournament.rounds))
+      //
+      // }).then(res => res.json()).then(data => console.log(data)).catch(err => console.log(err));
+      // return this.setState(prevState => ({
+      //   done: true
+      // }))
+      fetch(`/players`,{
+        headers:{
+          'Content-Type':'application/json'
+        },
+        method:'put',
+        body:JSON.stringify(this.state.tournament.players.byId)
+      }).then(res => res.json()).then(data => console.log(data)).catch(err => console.log(err));
+
       return this.setState(prevState => ({
         done: true
       }))
+
     }
     let round = this._getRound(rnd);
     const index = round.indexOf(id);

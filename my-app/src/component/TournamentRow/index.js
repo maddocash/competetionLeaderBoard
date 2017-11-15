@@ -17,7 +17,7 @@ const styles = {
     flex: '0 1 auto'
   }
 }
-
+// ...rest = the rest of the props handed in(excluding round, matchCapacity), it is a short hand.
 const TournamentRow = ({round, matchCapacity, ...rest}) => (
   <div style={styles.container}>
     {round && round.map((player, index) => {

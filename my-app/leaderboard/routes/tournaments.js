@@ -4,7 +4,21 @@ var router = express.Router();
 const Tournament = require('../models/tournaments');
 const Player = require('../models/players');
 
+/*
+ * Generate the right number of rounds based on player names
+ * @param  {number} length   [length of players array]
+ * @param  {number} capacity [number of players in each match]
+ * @return {number}          [description]
+ */
 const calculateNumRounds = (length, capacity) => Math.ceil(Math.log(length)/Math.log(capacity)) + 1;
+
+/*
+ * [generate initial state of tournament rows]
+ * @param  {number} numPlayers   [number of player names]
+ * @param  {number} capacity     [number of players per match]
+ * @param  {number} [fillWith=0] [starting value - will be player id later on]
+ * @return {[type]}              [description]
+ */
 const generateRounds = (numPlayers, capacity, fillWith = 0) => (
   Array.from(
     Array(

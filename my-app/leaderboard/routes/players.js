@@ -22,24 +22,47 @@ router.post('/', function(req, res, next) {
     return res.json({message:'saved player',payload: player});
   })
 });
-router.patch('/:id', function(req, res, next) {
-  const {wins, plays, score} = req.query;
 
-  Player.findById(req.params.id, (err,player) => {
+router.put('/', (req,res) =>{
+  let keys = Object.keys(req.body);
+  for(i = 0; i < keys.length; i++){
+    Player.findOneAndUpdate({_id:req.body.keys[i]._id},req.body.keys[i],(err,doc)=>{
+      if (err) {
+        return res.json({error:err})
+      }
+      console.log(doc);
+    })
+    console.log('ooooooo');
+  }
+  res.json({message:'aaaaaahhhhhh!!'})
+})
+
+
+router.patch('/', function(req, res, next) {
+  console.log(req.body);
+  let keys = Object.keys(req.body);
+  let MaxScore = Math.max.apply(null,Object.values({...req.body}));
+  let array = [];
+
+  for(var i = 0; i < keys.length; i++){
+  Player.findById(keys[i],  (err,player) => {
     if(err){
       return res.json({error: err})
     }
-    player.wins += wins || 0;
-    player.plays += plays || 0;
-    player.score += score || 0;
+    player.wins += MaxScore == Object.values(req.body)[i] ? 1 : 0;
+    player.plays += 1;
+    player.score += Number(req.body[keys[i]]) || 0;
 
-    player.save((err,player) => {
+    player.save((err,upPlayer) => {
       if(err){
         return res.json({error: err})
       }
-      return res.json({message:'saved player',payload: player});
+      return;
     })
+    return;
   })
+}
+return res.json({message:'updated player'});
 });
 
 router.delete('/:id', function(req,res,next){
